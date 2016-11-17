@@ -1,12 +1,12 @@
 {
 	"author": "Raul Gonzalez",
-	"dependencies": {
+	"dependencies": [{
 		"name": "puppetlabs/stdlib",
 		"version_requirement": ">= 2.2.1"
 	}],
 	"license": "GPL2",
 	"name": "rgonzalez-plesk",
-	"operatingsystem_support": {
+	"operatingsystem_support": [{
 		"operatingsystem": "Ubuntu",
 		"operatingsystemrelease": [
 			"10.04",
@@ -15,11 +15,11 @@
 		]
 	}],
 	"project_page": "",
-	"requirements": {
+	"requirements": [{
 		"name": "puppet",
 		"version_requirement": "3.x"
 	}],
-	"source": "",
+	"source": "https://github.com/ragonlan/puppet-plesk",
 	"summary": "Fact about Plesk",
 	"tags": [],
 	"version": "0.1.0"
