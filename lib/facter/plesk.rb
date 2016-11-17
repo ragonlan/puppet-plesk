@@ -50,7 +50,7 @@ if FileTest.exists?(psafile)
     filename = Dir['/etc/sw/keys/keys/key*'][0]
     if FileTest.exists?('/etc/sw/keys/keys/key*')
       File.foreach(filename) do |line|
-        if m = /<plesk-unix:domains core:type=\"integer\">(\d+)<\/plesk-unix:domains>/.match(line)
+        if m = /<plesk-unix:domains core:type=\"integer\">(.+)<\/plesk-unix:domains>/.match(line)
           lic = m[1]
           break
         end
