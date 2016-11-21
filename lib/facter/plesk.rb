@@ -5,7 +5,7 @@ if FileTest.exists?(psafile)
 
   is_installed = false
   pkg = nil
-  
+
   Facter.add("plesk") do
     confine :kernel => :linux
     os = Facter.value('operatingsystem')
@@ -14,7 +14,8 @@ if FileTest.exists?(psafile)
         pkg = Facter::Util::Resolution.exec 'rpm -q psa'
         is_installed = $?
       when "Debian", "Ubuntu"
-        pkg = Facter::Util::Resolution.exec 'dpkg -l psa'
+        pkg = Facter::Util::Resolution.exec 'dpkg-query --show psa'
+        pkg.tr!("\t", '-')
         is_installed = $?
       else
     end
@@ -22,7 +23,7 @@ if FileTest.exists?(psafile)
       pkg if is_installed
     end
   end
-  
+
   #Number of domains actived in plesk
   Facter.add('plesk_domain_active') do
     confine :kernel => :linux
@@ -31,7 +32,7 @@ if FileTest.exists?(psafile)
         %x[#{mysqlcmd} "select count(id) from domains where status='0' and parentDomainId='0'"].strip
       end
     end
-  end 
+  end
 
   Facter.add('plesk_version') do
     confine :kernel => :linux
@@ -47,12 +48,14 @@ if FileTest.exists?(psafile)
     confine :kernel => :linux
     lic = 0
     m = ''
-    filename = Dir['/etc/sw/keys/keys/key*'][0]
-    if FileTest.exists?(filename)
-      File.foreach(filename) do |line|
-        if m = /<plesk-unix:domains core:type=\"integer\">(.+)<\/plesk-unix:domains>/.match(line)
-          lic = m[1]
-          break
+    filenames = Dir['/etc/sw/keys/keys/key*']
+    filenames.each do |filename|
+      if FileTest.exists?(filename)
+        File.foreach(filename) do |line|
+          if m = /domains core:type=\"integer\">(.+)<\//.match(line)
+            lic = m[1]
+            break
+          end
         end
       end
     end
